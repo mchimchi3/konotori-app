@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>コウノトリ - 赤ちゃんの準備を、ベストタイミングで。</title>
+  <meta name="description" content="出産予定日・誕生日を登録するだけで「今やること・今買うもの」をベストタイミングで通知。妊娠中から生後2年まで、夫婦ふたりの育児準備アプリ。">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Hiragino Kaku Gothic ProN", Meiryo, sans-serif;
+      color: #333;
+      background: #fafaf8;
+    }
+
+    /* ナビ */
+    nav {
+      background: #fff;
+      border-bottom: 1px solid #e8e0d8;
+      padding: 16px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .logo { font-size: 20px; font-weight: bold; color: #e8845c; }
+    .nav-links a {
+      color: #555;
+      text-decoration: none;
+      margin-left: 24px;
+      font-size: 14px;
+    }
+
+    /* ヒーロー */
+    .hero {
+      background: linear-gradient(135deg, #fff8f4 0%, #fef3e8 100%);
+      text-align: center;
+      padding: 80px 24px;
+    }
+    .hero-badge {
+      display: inline-block;
+      background: #e8845c;
+      color: #fff;
+      font-size: 12px;
+      font-weight: bold;
+      padding: 4px 16px;
+      border-radius: 20px;
+      margin-bottom: 20px;
+      letter-spacing: 0.5px;
+    }
+    .hero h1 {
+      font-size: 36px;
+      font-weight: bold;
+      color: #222;
+      line-height: 1.3;
+      margin-bottom: 20px;
+    }
+    .hero h1 span { color: #e8845c; }
+    .hero p {
+      font-size: 18px;
+      color: #666;
+      max-width: 540px;
+      margin: 0 auto 40px;
+      line-height: 1.7;
+    }
+    .hero-cta {
+      display: inline-block;
+      background: #222;
+      color: #fff;
+      text-decoration: none;
+      padding: 16px 40px;
+      border-radius: 12px;
+      font-size: 16px;
+      font-weight: bold;
+      margin-bottom: 16px;
+    }
+    .hero-note { font-size: 13px; color: #999; }
+
+    /* 問題提起 */
+    .problem {
+      background: #fff;
+      padding: 64px 24px;
+    }
+    .problem .container {
+      max-width: 760px;
+      margin: 0 auto;
+      text-align: center;
+    }
+    .problem h2 {
+      font-size: 26px;
+      font-weight: bold;
+      margin-bottom: 32px;
+      color: #222;
+    }
+    .problem-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+      text-align: left;
+    }
+    .problem-card {
+      background: #fafaf8;
+      border: 1px solid #e8e0d8;
+      border-radius: 12px;
+      padding: 24px;
+    }
+    .problem-card .emoji { font-size: 28px; margin-bottom: 12px; }
+    .problem-card p { font-size: 15px; color: #555; line-height: 1.6; }
+
+    /* 解決策 */
+    .solution {
+      background: #fafaf8;
+      padding: 64px 24px;
+    }
+    .solution .container {
+      max-width: 760px;
+      margin: 0 auto;
+      text-align: center;
+    }
+    .section-label {
+      display: inline-block;
+      color: #e8845c;
+      font-size: 13px;
+      font-weight: bold;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+    .solution h2 {
+      font-size: 26px;
+      font-weight: bold;
+      margin-bottom: 12px;
+      color: #222;
+    }
+    .solution > .container > p {
+      color: #666;
+      margin-bottom: 48px;
+    }
+    .features {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 20px;
+      text-align: left;
+    }
+    .feature {
+      background: #fff;
+      border-radius: 12px;
+      border: 1px solid #e8e0d8;
+      padding: 28px 24px;
+    }
+    .feature-icon { font-size: 32px; margin-bottom: 16px; }
+    .feature h3 { font-size: 16px; font-weight: bold; margin-bottom: 8px; color: #222; }
+    .feature p { font-size: 14px; color: #666; line-height: 1.6; }
+
+    /* タイムライン例 */
+    .timeline-section {
+      background: #fff;
+      padding: 64px 24px;
+    }
+    .timeline-section .container {
+      max-width: 760px;
+      margin: 0 auto;
+    }
+    .timeline-section h2 {
+      font-size: 26px;
+      font-weight: bold;
+      text-align: center;
+      margin-bottom: 40px;
+      color: #222;
+    }
+    .timeline {
+      position: relative;
+      padding-left: 24px;
+      border-left: 2px solid #f0d8cc;
+    }
+    .tl-item {
+      position: relative;
+      margin-bottom: 28px;
+    }
+    .tl-dot {
+      position: absolute;
+      left: -33px;
+      top: 4px;
+      width: 18px;
+      height: 18px;
+      background: #e8845c;
+      border-radius: 50%;
+      border: 3px solid #fff8f4;
+    }
+    .tl-time {
+      font-size: 12px;
+      color: #e8845c;
+      font-weight: bold;
+      margin-bottom: 4px;
+    }
+    .tl-title { font-weight: bold; color: #222; margin-bottom: 4px; }
+    .tl-desc { font-size: 14px; color: #666; }
+
+    /* パパ向けセクション */
+    .papa-section {
+      background: linear-gradient(135deg, #f0f4ff 0%, #e8f0fe 100%);
+      padding: 64px 24px;
+      text-align: center;
+    }
+    .papa-section .container { max-width: 680px; margin: 0 auto; }
+    .papa-section h2 {
+      font-size: 26px;
+      font-weight: bold;
+      margin-bottom: 16px;
+      color: #222;
+    }
+    .papa-section p { color: #555; font-size: 16px; line-height: 1.7; }
+
+    /* 料金 */
+    .pricing {
+      background: #fafaf8;
+      padding: 64px 24px;
+    }
+    .pricing .container { max-width: 680px; margin: 0 auto; text-align: center; }
+    .pricing h2 { font-size: 26px; font-weight: bold; margin-bottom: 40px; color: #222; }
+    .plans {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+    .plan {
+      background: #fff;
+      border: 1px solid #e8e0d8;
+      border-radius: 16px;
+      padding: 32px 24px;
+      text-align: left;
+    }
+    .plan.featured {
+      border-color: #e8845c;
+      box-shadow: 0 0 0 2px #e8845c;
+    }
+    .plan-badge {
+      display: inline-block;
+      background: #e8845c;
+      color: #fff;
+      font-size: 11px;
+      padding: 3px 12px;
+      border-radius: 20px;
+      margin-bottom: 16px;
+    }
+    .plan h3 { font-size: 20px; font-weight: bold; margin-bottom: 4px; }
+    .plan .price { font-size: 28px; font-weight: bold; color: #e8845c; margin-bottom: 20px; }
+    .plan .price small { font-size: 14px; color: #888; }
+    .plan ul { list-style: none; }
+    .plan li { font-size: 14px; color: #555; padding: 6px 0; }
+    .plan li::before { content: "✓  "; color: #e8845c; font-weight: bold; }
+    @media (max-width: 480px) { .plans { grid-template-columns: 1fr; } }
+
+    /* CTA */
+    .cta {
+      background: #e8845c;
+      padding: 64px 24px;
+      text-align: center;
+      color: #fff;
+    }
+    .cta h2 { font-size: 26px; font-weight: bold; margin-bottom: 12px; }
+    .cta p { margin-bottom: 32px; opacity: 0.9; }
+    .cta a {
+      display: inline-block;
+      background: #fff;
+      color: #e8845c;
+      text-decoration: none;
+      padding: 16px 48px;
+      border-radius: 12px;
+      font-size: 16px;
+      font-weight: bold;
+    }
+
+    /* フッター */
+    footer {
+      background: #222;
+      color: #aaa;
+      padding: 32px 24px;
+      text-align: center;
+      font-size: 14px;
+    }
+    footer a { color: #ccc; text-decoration: none; margin: 0 12px; }
+    footer p { margin-top: 12px; }
+    .affiliate-note {
+      background: #f5f5f0;
+      border-top: 1px solid #e8e0d8;
+      padding: 16px 24px;
+      font-size: 12px;
+      color: #888;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+<!-- ナビ -->
+<nav>
+  <div class="logo">🪶 コウノトリ</div>
+  <div class="nav-links">
+    <a href="#features">機能</a>
+    <a href="#pricing">料金</a>
+    <a href="support.html">サポート</a>
+    <a href="privacy-policy.html">プライバシー</a>
+  </div>
+</nav>
+
+<!-- ヒーロー -->
+<section class="hero">
+  <div class="hero-badge">App Store にて配信予定</div>
+  <h1>赤ちゃんの準備を、<br><span>ベストタイミングで。</span></h1>
+  <p>出産予定日を登録するだけで「今買うべきもの」「今やること」を自動でお知らせ。妊娠4週から生後2年まで、夫婦ふたりでの育児準備をサポートします。</p>
+  <!-- App Store リリース後にリンクを有効化 -->
+  <a href="#" class="hero-cta">🍎 App Store でダウンロード</a><br>
+  <span class="hero-note">無料でご利用開始いただけます</span>
+</section>
+
+<!-- 問題提起 -->
+<section class="problem">
+  <div class="container">
+    <h2>こんな悩み、ありませんか？</h2>
+    <div class="problem-cards">
+      <div class="problem-card">
+        <div class="emoji">😰</div>
+        <p>「何をいつ買えばいいか分からない」準備リストをネットで探しても情報が多すぎて混乱する</p>
+      </div>
+      <div class="problem-card">
+        <div class="emoji">😓</div>
+        <p>「退院時にチャイルドシートが必要だったのを知らなかった」準備のタイミングを逃してしまった</p>
+      </div>
+      <div class="problem-card">
+        <div class="emoji">🤷</div>
+        <p>「何を手伝えばいいか分からない」育児に参加したいのに、パパは情報格差を感じている</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 解決策 -->
+<section class="solution" id="features">
+  <div class="container">
+    <span class="section-label">Features</span>
+    <h2>コウノトリが解決します</h2>
+    <p>必要なことを、必要なタイミングで。準備し忘れをゼロにする育児の相棒。</p>
+    <div class="features">
+      <div class="feature">
+        <div class="feature-icon">📅</div>
+        <h3>タイムライン通知</h3>
+        <p>出産予定日・誕生日から逆算して「今がベストタイミング」の通知を自動配信。買い忘れゼロへ。</p>
+      </div>
+      <div class="feature">
+        <div class="feature-icon">🛒</div>
+        <h3>Amazon即購入リンク</h3>
+        <p>通知から3タップでAmazonへ。厳選した商品リンク付きで、迷わず必要なものを購入できます。</p>
+      </div>
+      <div class="feature">
+        <div class="feature-icon">👨‍👩‍👧</div>
+        <h3>夫婦で共有</h3>
+        <p>チェックリストをパートナーと共有。「パパが完了」の通知でふたりで育児準備が進みます。</p>
+      </div>
+      <div class="feature">
+        <div class="feature-icon">✅</div>
+        <h3>準備進捗の可視化</h3>
+        <p>妊娠中から産後まで、何がどこまで準備できているか一目でわかるチェックリスト。</p>
+      </div>
+      <div class="feature">
+        <div class="feature-icon">🏛️</div>
+        <h3>行政手続きガイド</h3>
+        <p>出生届・児童手当・乳幼児健診など、期限のある手続きを漏れなく通知します。</p>
+      </div>
+      <div class="feature">
+        <div class="feature-icon">🔕</div>
+        <h3>スマート通知制御</h3>
+        <p>週2〜3回の厳選通知。新生児期は自動で頻度を下げるなど、通知疲れを起こさない設計。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- タイムライン例 -->
+<section class="timeline-section">
+  <div class="container">
+    <h2>こんな通知が届きます</h2>
+    <div class="timeline">
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-time">妊娠 24週</div>
+        <div class="tl-title">チャイルドシートを選ぶ時期です 🚗</div>
+        <div class="tl-desc">退院時に法律で義務付けられています。人気モデルは入荷待ちも。今が選び時です。</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-time">妊娠 32週</div>
+        <div class="tl-title">入院バッグの準備を始めましょう 🎒</div>
+        <div class="tl-desc">36週を過ぎると突然の入院も。今から少しずつ準備しておくと安心です。</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-time">出産後 3日</div>
+        <div class="tl-title">出生届の期限は14日以内です 📋</div>
+        <div class="tl-desc">市区町村への届け出を忘れずに。児童手当の申請も早めがお得です。</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-time">生後 5ヶ月</div>
+        <div class="tl-title">離乳食の準備を始めましょう 🥣</div>
+        <div class="tl-desc">6ヶ月開始に向けて、すり鉢・製氷皿・離乳食スプーンを揃えておきましょう。</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- パパ向け -->
+<section class="papa-section">
+  <div class="container">
+    <h2>パパも「対等な主役」になれる</h2>
+    <p>育児準備の情報はママに偏りがち。コウノトリはパパ専用ビューで「今週パパがやること」を3つに絞って表示。チェックリストの分担機能で、「言われなくても動けるパパ」を実現します。</p>
+  </div>
+</section>
+
+<!-- 料金 -->
+<section class="pricing" id="pricing">
+  <div class="container">
+    <h2>料金プラン</h2>
+    <div class="plans">
+      <div class="plan">
+        <h3>無料プラン</h3>
+        <div class="price">¥0</div>
+        <ul>
+          <li>基本的な通知（週1回）</li>
+          <li>商品レコメンド（月3件）</li>
+          <li>チェックリスト機能</li>
+          <li>1人の子ども登録</li>
+        </ul>
+      </div>
+      <div class="plan featured">
+        <div class="plan-badge">おすすめ</div>
+        <h3>プレミアム</h3>
+        <div class="price">¥480<small>/月</small><br><small style="font-size:13px;">年額 ¥3,800（月換算 ¥317）</small></div>
+        <ul>
+          <li>通知回数・タイミング無制限</li>
+          <li>商品レコメンド無制限</li>
+          <li>パートナー共有機能</li>
+          <li>通知カスタマイズ</li>
+          <li>広告非表示</li>
+          <li>子ども5人まで登録</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta">
+  <h2>今すぐ無料で始める</h2>
+  <p>出産予定日を入れるだけ。3分でセットアップ完了。</p>
+  <a href="#">App Store でダウンロード</a>
+</section>
+
+<!-- アフィリエイト開示 -->
+<div class="affiliate-note">
+  本アプリ内には Amazon.co.jp の商品へのアフィリエイトリンク（紹介リンク）が含まれています。リンク経由でご購入いただいた場合、開発者が紹介料を受け取ることがあります（Amazonアソシエイト・プログラム参加者）。
+</div>
+
+<footer>
+  <a href="privacy-policy.html">プライバシーポリシー</a>
+  <a href="support.html">サポート</a>
+  <p>&copy; 2026 コウノトリ. All rights reserved.</p>
+</footer>
+
+</body>
+</html>
