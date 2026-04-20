@@ -1,0 +1,4 @@
+KonotoriApp/App/Info.plist
+.DS_Store
+.build/
+*.xcuserstate
